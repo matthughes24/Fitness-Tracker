@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Autocomplete Textbox</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <div id="app">
+        <input class="typeahead" type="text" placeholder="Types of Exercises">
+    </div>
+
+    <script>   
+        var substringMatcher = function (strs) {
+            return function findMatches(z, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `z`
+                substrRegex = new RegExp(z, 'i');
+
+                // iterate through the pool of strings and for any string that
+                // contains the substring `z`, add it to the `matches` array
+                $.each(strs, function (i, str) {
+                    if (substrRegex.test(str)) {
+                        matches.push(str);
+                    }
+                });
+
+                cb(matches);
+            };
+        };
+
+        var exercises = ['Pushup', 'Squat', 'Lunge', 'Burpee', 'Deadlift',
+            'Plank', 'Skipping', 'Corkscrew', 'Skater', 'Situp'
+        ];
+
+        $('#app .typeahead').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            name: 'exercises',
+            source: substringMatcher(exercises)
+        });
+                
+    </script>
+</body>
+</html>
